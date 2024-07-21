@@ -1,12 +1,12 @@
-![Wordle+](https://raw.githubusercontent.com/MikhaD/wordle/main/public/img/og_1200x630.png)
+![Wordle+](https://raw.githubusercontent.com/jkeuper/wordle/main/public/img/og_1200x630.png)
 <div align="center">
-  <a href="https://mikhad.github.io/wordle/" ><img src="https://github.com/MikhaD/wordle/workflows/Publish/badge.svg?branch=main" alt="Publish workflow"/></a>
-  <img src="https://img.shields.io/github/package-json/v/MikhaD/wordle" alt="GitHub package.json version" />
+  <a href="https://jkeuper.github.io/wordle/" ><img src="https://github.com/jkeuper/wordle/workflows/Publish/badge.svg?branch=main" alt="Publish workflow"/></a>
+  <img src="https://img.shields.io/github/package-json/v/jkeuper/wordle" alt="GitHub package.json version" />
 </div>
 
 ---
 A recreation of the popular game [Wordle](https://www.nytimes.com/games/wordle/) by Josh Wardle (now purchased by the New York Times), with additional modes and features.
-Hosted on GitHub pages [here](https://mikhad.github.io/wordle/).
+Hosted on GitHub pages [here](https://jkeuper.github.io/wordle/).
 
 # Additional Features
 - Words are chosen from the list of words at random instead of in sequence, and the solution is not stored in localStorage, making it harder to cheat. The seed for the random number is created from the date, ensuring that everyone gets the same random number, so people can still compare answers.

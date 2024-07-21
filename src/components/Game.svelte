@@ -11,8 +11,10 @@
 		Separator,
 		Definition,
 		Tutorial,
+		NewCustom,
 		Statistics,
 		Distribution,
+		GuessesOverview,
 		Timer,
 		Toaster,
 		ShareGame,
@@ -47,6 +49,7 @@
 	const delay = DELAY_INCREMENT * ROWS + 800;
 
 	let showTutorial = $settings.tutorial === 3;
+	let showCustom = word === '';
 	let showSettings = false;
 	let showStats = false;
 	let showHistorical = false;
@@ -82,7 +85,9 @@
 			++game.guesses;
 			$letterStates.update(game.lastState, game.lastWord);
 			$letterStates = $letterStates;
+			
 			if (game.lastWord === word) win();
+
 			else if (game.guesses === ROWS) lose();
 		} else {
 			toaster.pop("Not in word list");
@@ -119,6 +124,20 @@
 		showSettings = false;
 		setTimeout(setShowStatsTrue, DELAY_INCREMENT);
 		lose();
+	}
+
+	function newCustom() {
+		showCustom = true;
+		showStats = false;
+		showRefresh = false;
+		// modeData.modes[$mode].historical = false;
+		// modeData.modes[$mode].seed = newSeed($mode);
+		// game = new GameState($mode, localStorage.getItem(`state-${$mode}`));
+		// word = '';
+		// $letterStates = new LetterStates();
+		// showStats = false;
+		// showRefresh = false;
+		// timer.reset($mode);
 	}
 
 	function reload() {
@@ -202,9 +221,15 @@
 	<Tutorial visible={showTutorial} />
 </Modal>
 
+<Modal
+	bind:visible={showCustom}
+>
+	<NewCustom visible={showCustom} />
+</Modal>
+
 <Modal bind:visible={showStats}>
 	{#if modeData.modes[$mode].historical}
-		<h2 class="historical">Statistics not available for historical games</h2>
+		<GuessesOverview {game} />
 	{:else}
 		<Statistics data={stats} />
 		<Distribution distribution={stats.guesses} {game} />
@@ -213,6 +238,7 @@
 		<Timer
 			slot="1"
 			bind:this={timer}
+			on:newCustom={newCustom}
 			on:timeup={() => (showRefresh = true)}
 			on:reload={reload}
 		/>

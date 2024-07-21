@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
 
-	import type { GameMode } from "../../enums";
+	import { GameMode } from "../../enums";
 	import { ms as MS } from "../../enums";
 	import { mode } from "../../stores";
-	import { modeData, timeRemaining } from "../../utils";
+	import { modeData, timeRemaining, GameState } from "../../utils";
 
 	const dispatch = createEventDispatcher();
 
@@ -27,9 +27,16 @@
 	$: reset($mode);
 </script>
 
-<h3>Next wordle</h3>
 <div class="container">
-	{#if ms > 0}
+	{#if $mode === GameMode.custom}
+		<div 
+			id="new"
+			on:click={() => dispatch("newCustom")}
+			on:keydown={() => dispatch("newCustom")}
+		>
+			new custom
+		</div>
+	{:else if ms > 0}
 		<div class="timer">
 			{`${Math.floor(ms / MS.HOUR)}`.padStart(2, "0")}:{`${Math.floor(
 				(ms % MS.HOUR) / MS.MINUTE
@@ -77,5 +84,23 @@
 	}
 	.button:hover {
 		opacity: 0.9;
+	}
+	div#new {
+		color: #fff;
+		font-size: var(--fs-medium);
+		text-transform: uppercase;
+		font-weight: bold;
+		background: var(--color-correct);
+		border-radius: 4px;
+		height: 120%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		width: 100%;
+		cursor: pointer;
+		&:hover {
+			opacity: 0.9;
+		}
 	}
 </style>

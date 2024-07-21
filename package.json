@@ -1,5 +1,5 @@
 {
-  "name": "wordle+",
+  "name": "mywordle",
   "description": "A remake of the popular game Wordle with additional modes and features.",
   "version": "1.5.2",
   "type": "module",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MikhaD/wordle.git"
+    "url": "git+https://github.com/jkeuper/wordle.git"
   },
   "keywords": [],
-  "author": "MikhaD",
+  "author": "Jasper Keuper",
   "bugs": {
-    "url": "https://github.com/MikhaD/wordle/issues"
+    "url": "https://github.com/jkeuper/wordle/issues"
   },
-  "homepage": "https://github.com/MikhaD/wordle#readme",
+  "homepage": "https://github.com/jkeuper/wordle#readme",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.2",
     "@tsconfig/svelte": "^3.0.0",

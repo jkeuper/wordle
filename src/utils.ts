@@ -8,7 +8,7 @@ export const COLS = 5;
 export const words = {
 	...wordList,
 	contains: (word: string) => {
-		return wordList.words.includes(word) || wordList.valid.includes(word);
+		return wordList.words.includes(word)/* || wordList.valid.includes(word)*/;
 	},
 };
 
@@ -137,7 +137,7 @@ export const keys = ["qwertyuiop", "asdfghjkl", "zxcvbnm"];
  * @param mode - The mode
  * @param time - The time. If omitted current time is used
  */
-export function newSeed(mode: GameMode, time?: number) {
+export function newSeed(mode: GameMode, time?: number) : number {
 	const now = time ?? Date.now();
 	switch (mode) {
 		case GameMode.daily:
@@ -150,6 +150,8 @@ export function newSeed(mode: GameMode, time?: number) {
 		// 	return now - (now % ms.MINUTE);
 		case GameMode.infinite:
 			return now - (now % ms.SECOND);
+		case GameMode.custom:
+			return Date.UTC(2009, 0, 3);
 	}
 }
 
@@ -181,6 +183,13 @@ export const modeData: ModeData = {
 			seed: newSeed(GameMode.infinite),
 			historical: false,
 			icon: "m7,100c0,-50 68,-50 93,0c25,50 93,50 93,0c0,-50 -68,-50 -93,0c-25,50 -93,50 -93,0z",
+		},
+		{
+			name: "Custom",
+			unit: ms.MS,
+			start: 1337133700000,
+			seed: newSeed(GameMode.custom),
+			historical: false,
 		},
 		// {
 		// 	name: "Minutely",

@@ -39,7 +39,7 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<h1
 		on:click|self={() => {
-			$mode = ($mode + 1) % modeData.modes.length;
+			$mode = ($mode + 1) % (modeData.modes.length-1);
 			toaster.pop(modeData.modes[$mode].name);
 		}}
 		on:contextmenu|preventDefault|self={() => {
