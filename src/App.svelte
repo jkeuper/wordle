@@ -18,8 +18,24 @@
     import { to_number } from "svelte/internal";
 
 	document.title = "Wordle+ | An infinite word guessing game";
-	
+</script>
+
+<script lang="ts">
+	export let version: string;
+	setContext("version", version);
+	localStorage.setItem("version", version);
+	let stats: Stats;
+	let word: string;
+	let state: GameState;
+	let toaster: Toaster;
+	let game: Game;
+
+	settings.set(new Settings(localStorage.getItem("settings")));
+	settings.subscribe((s) => localStorage.setItem("settings", JSON.stringify(s)));
+
 	function initFromUrl() {
+		game?.reset();
+		
 		const hash = window.location.hash.slice(1).split("/");
 		let modeVal: GameMode = !isNaN(GameMode[hash[0]])
 			? GameMode[hash[0]]
@@ -34,24 +50,11 @@
 			modeData.modes[modeVal].historical = true;
 		}
 	}
-	
+
 	function routeChange() {
 		initFromUrl();
 	}
-</script>
-
-<script lang="ts">
-	export let version: string;
-	setContext("version", version);
-	localStorage.setItem("version", version);
-	let stats: Stats;
-	let word: string;
-	let state: GameState;
-	let toaster: Toaster;
-
-	settings.set(new Settings(localStorage.getItem("settings")));
-	settings.subscribe((s) => localStorage.setItem("settings", JSON.stringify(s)));
-
+	
 	initFromUrl();
 
 	mode.subscribe((m) => {
@@ -80,6 +83,7 @@
 	});
 
 	$: saveState(state);
+
 	function saveState(state: GameState) {
 		if (modeData.modes[$mode].historical) {
 			localStorage.setItem(`state-${$mode}-h`, state.toString());
@@ -92,5 +96,5 @@
 <Toaster bind:this={toaster} />
 <svelte:window on:hashchange={routeChange} />
 {#if toaster}
-	<Game {stats} bind:word {toaster} bind:game={state} />
+	<Game {stats} bind:this={game} bind:word {toaster} bind:game={state} />
 {/if}

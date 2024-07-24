@@ -60,6 +60,14 @@
 	let board: Board;
 	let timer: Timer;
 
+	export function reset() {
+		showCustom = false;
+		showSettings = false;
+		showStats = false;
+		showHistorical = false;
+		showRefresh = false;
+	}
+
 	function submitWord() {
 		if (game.latestWord.length !== COLS) {
 			toaster.pop("Not enough letters");

@@ -27,9 +27,14 @@
 
 	function copyLink(e: MouseEvent | KeyboardEvent) {
 		if (!validWord) return;
+
+		let location = window.location.href;
+		if (window.location.hash.startsWith('#')) {
+			location = location.substring(0, location.indexOf('#'))
+		}
 		let wordNumber = words.words.indexOf(newWord) + seededRandomInt(0, words.words.length, newSeed(GameMode.custom));
 		toaster.pop("Copied");
-		navigator.clipboard.writeText(`${window.location.href}/${wordNumber}`);
+		navigator.clipboard.writeText(`${location}#custom/${wordNumber}`);
 	
 		//reset();
 	}
