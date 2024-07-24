@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { COLS, ROWS, words, modeData, seededRandomInt } from "../../utils";
+	import { COLS, ROWS, words, modeData, seededRandomInt, newSeed } from "../../utils";
 	import { getContext } from "svelte";
 	import type { Toaster } from ".";
 
 	import { Tile } from "../board";
     import { GameMode } from "../../enums";
-	export let visible: boolean;
 
 	const toaster = getContext<Toaster>("toaster");
 
@@ -28,14 +27,14 @@
 
 	function copyLink(e: MouseEvent | KeyboardEvent) {
 		if (!validWord) return;
-		let wordNumber = words.words.indexOf(newWord) + seededRandomInt(0, words.words.length, modeData.modes[GameMode.custom].seed);
+		let wordNumber = words.words.indexOf(newWord) + seededRandomInt(0, words.words.length, newSeed(GameMode.custom));
 		toaster.pop("Copied");
 		navigator.clipboard.writeText(`${window.location.href}/${wordNumber}`);
 	
 		//reset();
 	}
 
-	function reset() {
+	export function reset() {
 		newWord = "";
 		validWord = false;
 	}

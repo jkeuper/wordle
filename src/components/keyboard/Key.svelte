@@ -2,17 +2,22 @@
 	import { createEventDispatcher } from "svelte";
 
 	export let letter: string;
+	export let disabled = false;
 	export let state: LetterState = "🔳";
 
 	const dispatch = createEventDispatcher();
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class={state} class:big={letter.length !== 1} on:click={() => dispatch("keystroke", letter)}>
+<div class={state} class:disabled={disabled} class:big={letter.length !== 1} on:click={() => dispatch("keystroke", letter)}>
 	{letter}<slot />
 </div>
 
 <style>
+	.disabled {
+		background: var(--key-bg-disabled);
+		opacity: 0.6;
+	}
 	div {
 		font-size: calc(var(--fs-tiny) + 1px);
 		font-weight: bold;

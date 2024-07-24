@@ -55,6 +55,8 @@
 	let showHistorical = false;
 	let showRefresh = false;
 
+	let newCustomComponent: NewCustom;
+
 	let board: Board;
 	let timer: Timer;
 
@@ -127,17 +129,10 @@
 	}
 
 	function newCustom() {
+		newCustomComponent.reset();
 		showCustom = true;
 		showStats = false;
 		showRefresh = false;
-		// modeData.modes[$mode].historical = false;
-		// modeData.modes[$mode].seed = newSeed($mode);
-		// game = new GameState($mode, localStorage.getItem(`state-${$mode}`));
-		// word = '';
-		// $letterStates = new LetterStates();
-		// showStats = false;
-		// showRefresh = false;
-		// timer.reset($mode);
 	}
 
 	function reload() {
@@ -169,7 +164,12 @@
 	}
 
 	onMount(() => {
-		if (!game.active) setTimeout(setShowStatsTrue, delay);
+		if (word === '') {
+			game.active = false;
+		}
+		else if (!game.active) {
+			setTimeout(setShowStatsTrue, delay);
+		}
 	});
 	// $: toaster.pop(word);
 </script>
@@ -209,7 +209,7 @@
 			showStats = false;
 			showSettings = false;
 		}}
-		disabled={!game.active || $settings.tutorial === 3 || showHistorical}
+		disabled={!game.active || $settings.tutorial === 3 || showHistorical || showCustom}
 	/>
 </main>
 
@@ -219,12 +219,6 @@
 	fullscreen={$settings.tutorial === 0}
 >
 	<Tutorial visible={showTutorial} />
-</Modal>
-
-<Modal
-	bind:visible={showCustom}
->
-	<NewCustom visible={showCustom} />
 </Modal>
 
 <Modal bind:visible={showStats}>
@@ -261,7 +255,9 @@
 </Modal>
 
 <Modal fullscreen={true} bind:visible={showSettings}>
-	<Settings state={game} on:historical={() => (showHistorical = true)} />
+	<Settings state={game} 
+		on:historical={() => (showHistorical = true)}
+		on:custom={() => (newCustom())} />
 	{#if game.active}
 		<div class="button concede" on:click={concede} on:keydown={concede}>give up</div>
 	{/if}
@@ -289,6 +285,12 @@
 
 <Modal bind:visible={showHistorical}>
 	<Historical bind:showSettings />
+</Modal>
+
+<Modal
+	bind:visible={showCustom}
+>
+	<NewCustom bind:this={newCustomComponent} />
 </Modal>
 
 <style lang="scss">

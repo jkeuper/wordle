@@ -40,6 +40,8 @@
 	--color-absent: var(--border-primary);
 	--evaluated-key-color: var(--fg-primary);
 	--key-bg: var(--fg-secondary);
+	--key-bg-disabled: #333333;
+
 }
 
 body {
@@ -62,6 +64,8 @@ body {
 	--color-absent: var(--fg-secondary);
 	--evaluated-key-color: var(--bg-primary);
 	--key-bg: var(--border-primary);
+	--key-bg-disabled: #666666; 
+
 }
 
 .colorblind {

@@ -18,6 +18,26 @@
     import { to_number } from "svelte/internal";
 
 	document.title = "Wordle+ | An infinite word guessing game";
+	
+	function initFromUrl() {
+		const hash = window.location.hash.slice(1).split("/");
+		let modeVal: GameMode = !isNaN(GameMode[hash[0]])
+			? GameMode[hash[0]]
+			: /*+localStorage.getItem("mode") ||*/ modeData.default;
+
+		mode.set(modeVal, true);
+
+		// If this is a link to a specific word make sure that that is the word
+		if (!isNaN(+hash[1]) && (+hash[1] < getWordNumber(modeVal) || modeVal === GameMode.custom)) {
+			modeData.modes[modeVal].seed =
+				(+hash[1] - 1) * modeData.modes[modeVal].unit + modeData.modes[modeVal].start;
+			modeData.modes[modeVal].historical = true;
+		}
+	}
+	
+	function routeChange() {
+		initFromUrl();
+	}
 </script>
 
 <script lang="ts">
@@ -32,19 +52,7 @@
 	settings.set(new Settings(localStorage.getItem("settings")));
 	settings.subscribe((s) => localStorage.setItem("settings", JSON.stringify(s)));
 
-	const hash = window.location.hash.slice(1).split("/");
-	let modeVal: GameMode = !isNaN(GameMode[hash[0]])
-		? GameMode[hash[0]]
-		: /*+localStorage.getItem("mode") ||*/ modeData.default;
-
-	mode.set(modeVal);
-	
-	// If this is a link to a specific word make sure that that is the word
-	if (!isNaN(+hash[1]) && (+hash[1] < getWordNumber(modeVal) || modeVal === GameMode.custom)) {
-		modeData.modes[modeVal].seed =
-			(+hash[1] - 1) * modeData.modes[modeVal].unit + modeData.modes[modeVal].start;
-		modeData.modes[modeVal].historical = true;
-	}
+	initFromUrl();
 
 	mode.subscribe((m) => {
 		localStorage.setItem("mode", `${m}`);
@@ -82,6 +90,7 @@
 </script>
 
 <Toaster bind:this={toaster} />
+<svelte:window on:hashchange={routeChange} />
 {#if toaster}
 	<Game {stats} bind:word {toaster} bind:game={state} />
 {/if}
